@@ -1,13 +1,14 @@
 [gd_scene load_steps=3 format=3 uid="uid://ba8gq4obaammn"]
 
-[ext_resource type="Script" path="res://QuitButton.gd" id="1_isuw5"]
-[ext_resource type="Script" path="res://PlayButton.gd" id="2_ir3tq"]
+[ext_resource type="Script" path="res://main/QuitButton.gd" id="1_isuw5"]
+[ext_resource type="Script" path="res://main/PlayButton.gd" id="2_ir3tq"]
 
 [node name="Main" type="Node2D"]
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
 [node name="MenuBar" type="MenuBar" parent="."]
+visible = false
 offset_left = 2.0
 offset_top = 606.0
 offset_right = 1151.0

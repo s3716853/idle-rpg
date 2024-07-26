@@ -1,20 +1,36 @@
 {
 	"snake-s": {
-		"name": "Small Snake",
+		"info": {
+			"name": "Small Snake",
+			"description": "Snek"
+		},
 		"status": {
 			"health": 100,
 			"mana": 100
 		},
 		"stats": {	
-			"physical": 20,
+			"physical": 200,
 			"magic": 5,
 			"luck": 1,
 			"agility": 5
 		},
-		"asset": "TO DO"
+		"assets": {
+			"sprites": {
+				"main": "TODO",
+			},
+			"sounds": {
+				"entry": "TODO",
+				"exit": "TODO",
+				"action": "TODO",
+				"hit": "TODO"
+			}
+		}
 	},
 	"snake-l": {
-		"name": "Large Snake",
+		"info": {
+			"name": "Large Snake",
+			"description": "Snek"
+		},
 		"status": {
 			"health": 150,
 			"mana": 150
@@ -25,6 +41,16 @@
 			"luck": 1,
 			"agility": 5
 		},
-		"asset": "TO DO"
+		"assets": {
+			"sprites": {
+				"main": "TODO",
+			},
+			"sounds": {
+				"entry": "TODO",
+				"exit": "TODO",
+				"action": "TODO",
+				"hit": "TODO"
+			}
+		}
 	}
 }

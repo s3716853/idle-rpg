@@ -4,11 +4,9 @@
 			"name": "Small Snake",
 			"description": "Snek"
 		},
-		"status": {
-			"health": 100,
-			"mana": 100
-		},
 		"stats": {	
+			"max_health": 100,
+			"max_mana": 100,
 			"physical": 200,
 			"magic": 5,
 			"luck": 1,
@@ -31,11 +29,9 @@
 			"name": "Large Snake",
 			"description": "Snek"
 		},
-		"status": {
-			"health": 150,
-			"mana": 150
-		},
 		"stats": {	
+			"max_health": 100,
+			"max_mana": 100,
 			"physical": 5,
 			"magic": 25,
 			"luck": 1,

@@ -8,6 +8,8 @@ var battleCharacterInfo: BattleCharacterInfo
 var battleCharacterStats: BattleCharacterStats
 var battleCharacterStatus: BattleCharacterStatus
 
+var alive
+
 # Make sure that every parameter has a default value.
 # Otherwise, there will be problems with creating and editing
 # your resource via the inspector.
@@ -15,7 +17,23 @@ func _init(p_battleCharacterInfo = BattleCharacterInfo.new(), p_battleCharacterS
 	battleCharacterInfo = p_battleCharacterInfo
 	battleCharacterStats = p_battleCharacterStats
 	battleCharacterStatus = p_battleCharacterStatus
+	alive = true
+	
+func take_damage(amount: int):
+	var health = battleCharacterStatus.reduce_health(amount)
+	if (health <= 0):
+		alive = false
+	return alive
+	
+func heal(amount: int):
+	battleCharacterStatus.increase_health(amount, battleCharacterStats.max_health)
+	
+func use_mana(amount: int):
+	battleCharacterStatus.reduce_mana(amount)
 
+func replenish_mana(amount: int):
+	battleCharacterStatus.increase_mana(amount, battleCharacterStats.max_mana)
+	
 static func from_dict(dictionary: Dictionary):
 	var instance = load("res://battle/battle-character/BattleCharacter.gd").new()
 	instance.battleCharacterInfo = BattleCharacterInfo.from_dict(dictionary["info"])

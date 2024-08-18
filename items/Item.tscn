@@ -1,3 +1,16 @@
-[gd_scene format=3 uid="uid://0tgrpjvwq1m0"]
+[gd_scene load_steps=3 format=3 uid="uid://0tgrpjvwq1m0"]
+
+[ext_resource type="Texture2D" uid="uid://dwl7j04ndtxop" path="res://items/potion.png" id="1_nq34b"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pf2y7"]
+size = Vector2(32, 32)
 
 [node name="Item" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_nq34b")
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+shape = SubResource("RectangleShape2D_pf2y7")

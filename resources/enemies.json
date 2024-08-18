@@ -14,7 +14,7 @@
 		},
 		"assets": {
 			"sprites": {
-				"main": "TODO",
+				"main": "res://resources/sprite/sprite-0002.tres",
 			},
 			"sounds": {
 				"entry": "TODO",

@@ -1,4 +1,5 @@
 extends Resource
+class_name BattleCharacter
 
 const BattleCharacterInfo = preload("res://battle/battle-character/BattleCharacterInfo.gd")
 const BattleCharacterStats = preload("res://battle/battle-character/BattleCharacterStats.gd")
@@ -8,7 +9,7 @@ var battleCharacterInfo: BattleCharacterInfo
 var battleCharacterStats: BattleCharacterStats
 var battleCharacterStatus: BattleCharacterStatus
 
-var alive
+var alive : bool
 
 # Make sure that every parameter has a default value.
 # Otherwise, there will be problems with creating and editing
@@ -38,6 +39,7 @@ static func from_dict(dictionary: Dictionary):
 	var instance = load("res://battle/battle-character/BattleCharacter.gd").new()
 	instance.battleCharacterInfo = BattleCharacterInfo.from_dict(dictionary["info"])
 	instance.battleCharacterStats = BattleCharacterStats.from_dict(dictionary["stats"])
-	instance.battleCharacterStatus = BattleCharacterStatus.from_dict(dictionary["status"])
+	if(dictionary.has("status")):
+		instance.battleCharacterStatus = BattleCharacterStatus.from_dict(dictionary["status"])
 	return instance
 

@@ -24,14 +24,53 @@ offset_right = 807.0
 offset_bottom = 411.0
 script = ExtResource("2_dafei")
 
-[node name="Enemy" type="HBoxContainer" parent="."]
+[node name="Enemy_Container" type="HBoxContainer" parent="."]
 offset_right = 1152.0
 offset_bottom = 289.0
+alignment = 1
 
-[node name="Move Selection" type="HBoxContainer" parent="."]
+[node name="Enemy_Sprite_01" type="AnimatedSprite2D" parent="Enemy_Container"]
+position = Vector2(473, 183)
+scale = Vector2(2.125, 2.125)
+animation = &""
+
+[node name="Enemy_Info_Container" type="VBoxContainer" parent="Enemy_Container"]
+layout_mode = 2
+alignment = 1
+
+[node name="Health" type="Label" parent="Enemy_Container/Enemy_Info_Container"]
+layout_mode = 2
+
+[node name="Mana" type="Label" parent="Enemy_Container/Enemy_Info_Container"]
+layout_mode = 2
+
+[node name="Buffs" type="Label" parent="Enemy_Container/Enemy_Info_Container"]
+layout_mode = 2
+
+[node name="Effects" type="Label" parent="Enemy_Container/Enemy_Info_Container"]
+layout_mode = 2
+
+[node name="Friend_Container" type="HBoxContainer" parent="."]
 offset_left = 2.0
 offset_top = 366.0
 offset_right = 1155.0
 offset_bottom = 569.0
+alignment = 1
+
+[node name="Heal" type="Button" parent="Friend_Container"]
+layout_mode = 2
+text = "Heal"
+
+[node name="Hurt" type="Button" parent="Friend_Container"]
+layout_mode = 2
+text = "Hurt"
+
+[node name="Mana" type="Button" parent="Friend_Container"]
+layout_mode = 2
+text = "Mana"
+
+[node name="Un-Mana" type="Button" parent="Friend_Container"]
+layout_mode = 2
+text = "Un-mana"
 
 [connection signal="pressed" from="Button" to="Button" method="_on_pressed"]

@@ -1,0 +1,27 @@
+{
+	"coco": {
+		"info": {
+			"name": "Coco",
+			"description": "Kitty Meow"
+		},
+		"stats": {	
+			"max_health": 100,
+			"max_mana": 100,
+			"physical": 10,
+			"magic": 5,
+			"luck": 1,
+			"agility": 5
+		},
+		"assets": {
+			"sprites": {
+				"main": "res://resources/sprite/sprite-0002.tres",
+			},
+			"sounds": {
+				"entry": "TODO",
+				"exit": "TODO",
+				"action": "TODO",
+				"hit": "TODO"
+			}
+		}
+	}
+}

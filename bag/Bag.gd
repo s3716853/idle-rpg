@@ -8,6 +8,9 @@ func _ready():
 	var item = scene.instantiate()
 	add_child(item)
 	var tilemap = $TileMap
+	print(tilemap)
+	item.set_world_coords(tilemap)
+	item.test()
 	
 #placing item inside the bag using hardcoded vector
 	item.position = tilemap.map_to_local(Vector2i(1, 1))

@@ -1,5 +1,9 @@
 extends CharacterBody2D
 
+var tilemap
+
+func _ready():
+	pass
 
 const SPEED = 32.0
 
@@ -28,3 +32,10 @@ func _physics_process(delta):
 		
 	move_and_collide(motion)
 		
+
+func set_world_coords(coords: TileMap):
+	tilemap = coords
+	print(tilemap.get_cell_tile_data(0, Vector2i(1, 1)))
+	
+func test():
+	print(tilemap)

@@ -1,13 +1,15 @@
 extends Node2D
 
 var enemy_data = null
+var assist_data = null
 var rng = RandomNumberGenerator.new()
 var enemies = []
-var friends = []
+var assists = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready(): 
 	load_enemy_data()
+	load_assist_data()
 	load_current_battle()
 	load_enemy_sprites()
 	prepare_listeners()
@@ -25,6 +27,11 @@ func load_enemy_data():
 	var content = file.get_as_text()
 	enemy_data = JSON.parse_string(content)
 	
+func load_assist_data():
+	var file = FileAccess.open("res://resources/assists.json", FileAccess.READ)
+	var content = file.get_as_text()
+	assist_data = JSON.parse_string(content)
+
 func load_current_battle():
 	#var my_random_number = rng.randf_range(1, 1)
 	print(enemy_data["snake-s"])
@@ -32,7 +39,12 @@ func load_current_battle():
 	enemy.battle_character = BattleCharacter.from_dict(enemy_data["snake-s"])
 	enemy.battle_character_assets = BattleCharacterAssets.from_dict(enemy_data["snake-s"]["assets"])
 	enemies.append(enemy)
-
+	
+	var assist = BattleCharacterController.new()
+	assist.battle_character = AssistCharacter.from_dict(assist_data["coco"])
+	assist.battle_character_assets = BattleCharacterAssets.from_dict(assist_data["coco"]["assets"])
+	assists.append(assist)
+	
 func prepare_listeners():
 	for enemy : BattleCharacterController in enemies:
 		enemy.health_change.connect(on_health_change)

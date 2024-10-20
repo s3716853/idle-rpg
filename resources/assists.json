@@ -22,6 +22,7 @@
 				"action": "TODO",
 				"hit": "TODO"
 			}
-		}
+		},
+		"move_bag": ["bite"]
 	}
 }

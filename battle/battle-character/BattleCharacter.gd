@@ -1,14 +1,11 @@
 extends Resource
 class_name BattleCharacter
 
-const BattleCharacterInfo = preload("res://battle/battle-character/BattleCharacterInfo.gd")
-const BattleCharacterStats = preload("res://battle/battle-character/BattleCharacterStats.gd")
-const BattleCharacterStatus = preload("res://battle/battle-character/BattleCharacterStatus.gd")
-
 var battleCharacterInfo: BattleCharacterInfo
 var battleCharacterStats: BattleCharacterStats
 var battleCharacterStatus: BattleCharacterStatus
 
+var move_bag: Array
 var alive : bool
 
 # Make sure that every parameter has a default value.
@@ -41,5 +38,5 @@ static func from_dict(dictionary: Dictionary):
 	instance.battleCharacterStats = BattleCharacterStats.from_dict(dictionary["stats"])
 	if(dictionary.has("status")):
 		instance.battleCharacterStatus = BattleCharacterStatus.from_dict(dictionary["status"])
+	instance.move_bag = dictionary["move_bag"]
 	return instance
-

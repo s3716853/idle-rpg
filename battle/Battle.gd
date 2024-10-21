@@ -51,9 +51,9 @@ func prepare_listeners():
 		enemy.mana_change.connect(on_health_change)
 		
 func on_health_change(battle_character, before, after):
-	if(before < after):
+	if(before > after):
 		print("Hurt")
-	elif(before > after):
+	elif(before < after):
 		print("Healed")
 	else: 
 		print("This shouldn't happen")
@@ -80,3 +80,51 @@ func display_current_battle():
 	var enemy_sprite : AnimatedSprite2D = get_node("Enemy_Container/Enemy_Sprite_01")
 	enemy_sprite.animation= "idle"
 	enemy_sprite.play()
+	
+	display_current_assist_characters()
+
+func display_current_assist_characters():
+	for assist: BattleCharacterController in assists:
+		var assist_info = assist.info()
+		var assist_button = Button.new()
+		assist_button.pressed.connect(on_assist_button_pressed.bind(assist))
+		assist_button.text = assist_info["name"]
+		
+		var assist_container = get_node("Friend_Container/Assists_Container")
+		assist_container.add_child(assist_button)
+		
+func on_assist_button_pressed(selected_assist : BattleCharacterController):
+	print(selected_assist.info()["name"])
+	
+	get_node("Friend_Container/Assists_Container").set_visible(false)
+	var moves_container = get_node("Friend_Container/Moves_Container")
+	for child in moves_container.get_children():
+		child.free()
+		
+	var moves = selected_assist.get_moves()
+	for move in moves:
+		var move_info = move.info()
+		var move_button = Button.new()
+		move_button.text = move_info["name"]
+		move_button.pressed.connect(on_move_button_pressed.bind(move, selected_assist))
+		moves_container.add_child(move_button)
+	
+	moves_container.set_visible(true)
+
+func test_func(user: BattleCharacterController):
+	print("WOWOWOWO")
+	
+func on_move_button_pressed(move, user: BattleCharacterController):
+	var move_info = move.info()
+	print(move_info["name"] + " used!")
+	if move_info["targets"] == BattleMove.TARGETS.ENEMY:
+		print("SELECT ENEMY")
+	elif move_info["targets"] == BattleMove.TARGETS.SELF:
+		print("AUTO SELECT SELF")
+	elif move_info["targets"] == BattleMove.TARGETS.FRIEND:
+		print("SELECT FRIEND")
+	move.use(user, enemies[0], null, null)
+	swap_turn()
+	
+func swap_turn():
+	print("TURN OVER")

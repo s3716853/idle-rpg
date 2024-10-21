@@ -51,26 +51,32 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="Friend_Container" type="HBoxContainer" parent="."]
-offset_left = 2.0
-offset_top = 366.0
-offset_right = 1155.0
-offset_bottom = 569.0
+offset_top = 314.0
+offset_right = 1152.0
+offset_bottom = 522.0
 alignment = 1
 
-[node name="Heal" type="Button" parent="Friend_Container"]
+[node name="Assists_Container" type="HBoxContainer" parent="Friend_Container"]
 layout_mode = 2
-text = "Heal"
+alignment = 1
 
-[node name="Hurt" type="Button" parent="Friend_Container"]
+[node name="Moves_Container" type="HBoxContainer" parent="Friend_Container"]
+visible = false
 layout_mode = 2
-text = "Hurt"
+alignment = 1
 
-[node name="Mana" type="Button" parent="Friend_Container"]
-layout_mode = 2
-text = "Mana"
+[node name="Player_Container" type="HBoxContainer" parent="."]
+offset_left = 545.0
+offset_top = 465.0
+offset_right = 776.0
+offset_bottom = 642.0
+alignment = 1
 
-[node name="Un-Mana" type="Button" parent="Friend_Container"]
-layout_mode = 2
-text = "Un-mana"
+[node name="Back_Button" type="Button" parent="."]
+offset_left = 11.0
+offset_top = 319.0
+offset_right = 56.0
+offset_bottom = 367.0
+text = "Back"
 
 [connection signal="pressed" from="Button" to="Button" method="_on_pressed"]

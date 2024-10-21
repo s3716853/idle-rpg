@@ -22,7 +22,8 @@
 				"action": "TODO",
 				"hit": "TODO"
 			}
-		}
+		},
+		"move_bag": ["Bite"]
 	},
 	"snake-l": {
 		"info": {
@@ -47,6 +48,7 @@
 				"action": "TODO",
 				"hit": "TODO"
 			}
-		}
+		},
+		"move_bag": ["Bite"]
 	}
 }

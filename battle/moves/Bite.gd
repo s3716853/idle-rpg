@@ -1,6 +1,6 @@
 extends BattleMove
 
-static func use(user : BattleCharacterController, target : BattleCharacterController,  player: BattleCharacterController, party: Array[BattleCharacterController]):
+static func use(user : BattleCharacterController, target : BattleCharacterController,  player: BattleCharacterController, party):
 	var damage = calculate_damage(user, target)
 	target.take_damage(damage)
 	

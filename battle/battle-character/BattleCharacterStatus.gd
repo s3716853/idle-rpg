@@ -1,4 +1,5 @@
 extends Resource
+class_name BattleCharacterStatus
 
 @export var health: int
 @export var mana: int

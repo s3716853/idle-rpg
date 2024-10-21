@@ -1,4 +1,5 @@
 extends Resource
+class_name BattleCharacterStats
 
 @export var max_health: int
 @export var max_mana: int

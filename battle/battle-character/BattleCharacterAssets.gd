@@ -1,4 +1,4 @@
-extends Node
+extends Resource
 class_name BattleCharacterAssets
 
 enum sound_types {ENTRY, EXIT, HIT, ACTION}

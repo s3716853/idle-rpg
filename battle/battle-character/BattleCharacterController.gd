@@ -1,9 +1,6 @@
 extends Node
 class_name BattleCharacterController
 
-const BattleCharacter = preload("res://battle/battle-character/BattleCharacter.gd")
-const BattleCharacterAssets = preload("res://battle/battle-character/BattleCharacterAssets.gd")
-
 var battle_character : BattleCharacter
 var battle_character_assets : BattleCharacterAssets
 
@@ -45,3 +42,15 @@ func replenish_mana(amount: int):
 func get_sprite_resource(sprite_type: BattleCharacterAssets.sprite_types):
 	return load(battle_character_assets.get_sprite(sprite_type))
 	
+func get_moves():
+	var moves = []
+	for move in battle_character.move_bag:
+		var move_resource_string = "res://battle/moves/%s.gd" % move
+		var move_object = load("res://battle/moves/%s.gd" % move)
+		moves.append(move_object)
+	return moves
+	
+func info():
+	return {
+		"name": battle_character.battleCharacterInfo.name
+	}

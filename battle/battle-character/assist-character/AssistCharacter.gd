@@ -1,7 +1,7 @@
 extends BattleCharacter
 class_name AssistCharacter
 
-var move_bag: Array
+#var move_bag: Array
 
 func _init(p_battleCharacterInfo = BattleCharacterInfo.new(), p_battleCharacterStats = BattleCharacterStats.new(), p_battleCharacterStatus = BattleCharacterStatus.new(), p_move_bag = []):
 	move_bag = p_move_bag

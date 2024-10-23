@@ -13,27 +13,27 @@ func _physics_process(delta):
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	
-#	motion is using a vector to represent which direction the next tile will be
-	var motion = Vector2i(0, 0)
-	
-	#var direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-	if Input.is_action_just_pressed("ui_down"):
-		motion.x = 0
-		motion.y = SPEED
-	if Input.is_action_just_pressed("ui_up"):
-		motion.x = 0
-		motion.y = -SPEED
-	if Input.is_action_just_pressed("ui_left"):
-		motion.x = -SPEED
-		motion.y = 0
-	if Input.is_action_just_pressed("ui_right"):
-		motion.x = SPEED
-		motion.y = 0
-		
-#	make sure there is room to move item before updating current_pos
-	if is_space_available(motion):
-		current_pos = motion + current_pos
-		position = tilemap.map_to_local(current_pos)
+	if tilemap != null:
+		#	motion is using a vector to represent which direction the next tile will be
+		var motion = Vector2i(0, 0)
+		#var direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+		if Input.is_action_just_pressed("ui_down"):
+			motion.x = 0
+			motion.y = SPEED
+		if Input.is_action_just_pressed("ui_up"):
+			motion.x = 0
+			motion.y = -SPEED
+		if Input.is_action_just_pressed("ui_left"):
+			motion.x = -SPEED
+			motion.y = 0
+		if Input.is_action_just_pressed("ui_right"):
+			motion.x = SPEED
+			motion.y = 0
+			
+	#	make sure there is room to move item before updating current_pos
+		if is_space_available(motion):
+			current_pos = motion + current_pos
+			position = tilemap.map_to_local(current_pos)
 		
 
 # receives tilemap to calculate whether an item is staying within confines of bag

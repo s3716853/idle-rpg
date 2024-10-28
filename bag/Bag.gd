@@ -3,24 +3,25 @@ extends Node2D
 var selected_item
 var tilemap: TileMap
 var bag_contents = {}
+const pocket_layer = 0
 
 var scene = preload("res://items/BagItem.tscn")
 # Called when the node enters the scene tree for the first time.
 func _ready():
-# adding in a placeholder item for testing
 	tilemap = $TileMap
-#instanciate item in scene - currently for testing purposes that an item is placed when starting scene
-	
-#instanciates an instance of an item and sends tilemap for calculations
+# adding in a placeholder item for testing
+# instanciate item in scene - currently for testing purposes that an item is placed when starting scene
+# sends tilemap for calculations
 	var item = scene.instantiate()
 	item.set_world_coords(tilemap)
 	add_child(item)
 	selected_item = item
 	
-#placing item inside the bag using hardcoded vector
+# placing item inside the bag using hardcoded vector
 	item.position = tilemap.map_to_local(Vector2i(1, 1))
 	
-	for cell in tilemap.get_used_cells(0):
+# creates empty bag
+	for cell in tilemap.get_used_cells(pocket_layer):
 		bag_contents[cell] = null
 
 
@@ -29,16 +30,23 @@ func _process(delta):
 	display_bag()
 #saves item to bag_contents dict when pressing Enter, deletes when pressing Esc
 	if Input.is_action_just_pressed("ui_accept"):
+# if there is space in specified area
 		if bag_contents[selected_item.current_pos] == null:
+# creates a new scene and adds to tree
 			bag_contents[selected_item.current_pos] = scene.instantiate()
 			add_child(bag_contents[selected_item.current_pos])
+# sets item's position relative to the bag's local coordinate system, then fades the colour
 			bag_contents[selected_item.current_pos].position = tilemap.map_to_local(selected_item.current_pos)
 			bag_contents[selected_item.current_pos].modulate = Color(0.8, 0.8, 0.8, 0.8)
 		else: 
+# test output to console - there is an item already in the specified area
 			print(bag_contents[selected_item.current_pos])
 	if Input.is_action_just_pressed("ui_cancel"):
+# test output to console 
 		print(bag_contents[selected_item.current_pos])
+# if an item is already in the specified area
 		if bag_contents[selected_item.current_pos] != null:
+# delete scene instance and clear bag's dictionary value
 			bag_contents[selected_item.current_pos].queue_free()
 			bag_contents[selected_item.current_pos] = null
 		

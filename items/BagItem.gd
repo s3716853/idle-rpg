@@ -16,7 +16,6 @@ func _physics_process(delta):
 	if tilemap != null:
 		#	motion is using a vector to represent which direction the next tile will be
 		var motion = Vector2i(0, 0)
-		#var direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 		if Input.is_action_just_pressed("ui_down"):
 			motion.x = 0
 			motion.y = SPEED

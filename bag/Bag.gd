@@ -5,6 +5,8 @@ var tilemap: TileMap
 var bag_contents = {}
 const pocket_layer = 0
 
+@export var res:Item
+
 var scene = preload("res://items/BagItem.tscn")
 # Called when the node enters the scene tree for the first time.
 func _ready():

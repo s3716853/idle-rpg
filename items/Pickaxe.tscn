@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://d1em6d4gc8hu4"]
+
+[ext_resource type="Texture2D" uid="uid://uvbwaf2dodtp" path="res://items/pickaxe.png" id="1_el6xr"]
+
+[node name="Pickaxe" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_el6xr")

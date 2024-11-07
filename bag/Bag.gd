@@ -4,6 +4,7 @@ var selected_item
 var tilemap: TileMap
 var bag_contents = {}
 const pocket_layer = 0
+var res_scene
 
 @export var res:Item
 
@@ -18,6 +19,10 @@ func _ready():
 	item.set_world_coords(tilemap)
 	add_child(item)
 	selected_item = item
+	
+	res_scene = res.scene.instantiate()
+	add_child(res_scene)
+	res_scene.position = tilemap.map_to_local(Vector2i(3, 3))
 	
 # placing item inside the bag using hardcoded vector
 	item.position = tilemap.map_to_local(Vector2i(1, 1))
@@ -51,6 +56,8 @@ func _process(delta):
 # delete scene instance and clear bag's dictionary value
 			bag_contents[selected_item.current_pos].queue_free()
 			bag_contents[selected_item.current_pos] = null
+	if Input.is_action_just_pressed("ui_cancel"):
+		res.rotate(res_scene)
 		
 		
 func display_bag():

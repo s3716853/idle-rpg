@@ -2,8 +2,9 @@ class_name Item
 extends Resource
 
 @export var item_space = {}
+@export var scene:PackedScene
 
-func rotate():
+func rotate(item:Node):
 	if item_space.size() > 1:
 		var x = 1
 		var y = 1
@@ -29,7 +30,10 @@ func rotate():
 				x += 1
 			y += 1
 			x = 1
-	
-	#for vector in item_space:
-		#print(vector, item_space[vector])
-	#print("\n")
+	item.rotation_degrees += 90
+	if item.rotation_degrees == 360:
+		item.rotation_degrees = 0
+	for vector in item_space:
+		print(vector, item_space[vector])
+	print("\n")
+	print(item.rotation_degrees)

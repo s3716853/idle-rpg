@@ -1,5 +1,6 @@
-[gd_resource type="Resource" script_class="Item" load_steps=2 format=3 uid="uid://icmikbeslfap"]
+[gd_resource type="Resource" script_class="Item" load_steps=3 format=3 uid="uid://icmikbeslfap"]
 
+[ext_resource type="PackedScene" uid="uid://d1em6d4gc8hu4" path="res://items/Pickaxe.tscn" id="1_a4ro1"]
 [ext_resource type="Script" path="res://items/Item.gd" id="1_m2h3l"]
 
 [resource]
@@ -15,3 +16,4 @@ Vector2i(3, 1): true,
 Vector2i(3, 2): false,
 Vector2i(3, 3): false
 }
+scene = ExtResource("1_a4ro1")

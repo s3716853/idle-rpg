@@ -1,5 +1,6 @@
-[gd_resource type="Resource" script_class="Item" load_steps=2 format=3 uid="uid://ljdya7h5ohow"]
+[gd_resource type="Resource" script_class="Item" load_steps=3 format=3 uid="uid://ljdya7h5ohow"]
 
+[ext_resource type="PackedScene" uid="uid://4mxk1rrj4r17" path="res://items/Potion.tscn" id="1_ps1fj"]
 [ext_resource type="Script" path="res://items/Item.gd" id="1_vion0"]
 
 [resource]
@@ -7,3 +8,4 @@ script = ExtResource("1_vion0")
 item_space = {
 Vector2i(1, 1): true
 }
+scene = ExtResource("1_ps1fj")

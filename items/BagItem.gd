@@ -36,12 +36,12 @@ func _physics_process(delta):
 		
 
 # receives tilemap to calculate whether an item is staying within confines of bag
-func set_world_coords(coords: TileMap):
+func set_world_coords(coords: TileMapLayer):
 	tilemap = coords
 	
 # returns true only if tile exists in pocket layer in specified direction
 func is_space_available(motion: Vector2i):
-	if (tilemap.get_cell_tile_data(0, motion + current_pos)):
+	if (tilemap.get_cell_tile_data(motion + current_pos)):
 		return true
 	else:
 		return false

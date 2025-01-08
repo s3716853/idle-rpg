@@ -1,7 +1,7 @@
 extends Node2D
 
 var selected_item
-var tilemap: TileMap
+var tilemap: TileMapLayer
 var bag_contents = {}
 const pocket_layer = 0
 var res_scene
@@ -11,7 +11,7 @@ var res_scene
 var scene = preload("res://items/BagItem.tscn")
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	tilemap = $TileMap
+	tilemap = $pocket
 # adding in a placeholder item for testing
 # instanciate item in scene - currently for testing purposes that an item is placed when starting scene
 # sends tilemap for calculations
@@ -28,7 +28,7 @@ func _ready():
 	item.position = tilemap.map_to_local(Vector2i(1, 1))
 	
 # creates empty bag
-	for cell in tilemap.get_used_cells(pocket_layer):
+	for cell in tilemap.get_used_cells():
 		bag_contents[cell] = null
 
 
@@ -61,6 +61,6 @@ func _process(delta):
 		
 		
 func display_bag():
-	for cell in tilemap.get_used_cells(0):
+	for cell in tilemap.get_used_cells():
 		if bag_contents[cell] != null:
 			bag_contents[cell].position = tilemap.map_to_local(cell)

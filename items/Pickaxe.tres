@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_m2h3l")
+id = 1
 item_space = {
 Vector2i(1, 1): true,
 Vector2i(1, 2): false,

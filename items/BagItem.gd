@@ -1,10 +1,14 @@
 extends CharacterBody2D
 
 var tilemap
+var id
 var current_pos = Vector2i(1, 1)
 
 func _ready():
 	pass
+	
+func set_id(item_id: int):
+	id = item_id
 
 const SPEED = 1.0
 

@@ -5,6 +5,7 @@ var tilemap: TileMapLayer
 var bag_contents = {}
 const pocket_layer = 0
 var res_scene
+var item_id = 0
 
 @export var res:Item
 
@@ -17,6 +18,7 @@ func _ready():
 # sends tilemap for calculations
 	var item = scene.instantiate()
 	item.set_world_coords(tilemap)
+	assign_id(item)
 	add_child(item)
 	selected_item = item
 	
@@ -31,7 +33,10 @@ func _ready():
 	for cell in tilemap.get_used_cells():
 		bag_contents[cell] = null
 
-
+func assign_id(item: Node):
+	item.set_id(item_id)
+	item_id += 1
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	display_bag()

@@ -1,7 +1,6 @@
 class_name Item
 extends Resource
 
-@export var id = 0
 @export var item_space = {}
 @export var scene:PackedScene
 

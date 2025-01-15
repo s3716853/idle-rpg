@@ -39,35 +39,8 @@ func assign_id(item: Node):
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-#	these two methods use bag's local dictionary for bag storage
-# 	currently testing using TileMapLayers as storage instead
-	#display_bag()
-	#bag_storage()
-	if Input.is_action_just_pressed("ui_accept"):
-		if find_tile(selected_item.current_pos) == null:
-			var newLayer = TileMapLayer.new()
-			newLayer.set_tile_set(tilemap.get_tile_set())
-			$TileMap.add_child(newLayer)
-			newLayer.set_cell(selected_item.current_pos, item_id, Vector2i(0,0), 0)
-			item_id += 1
-			print(newLayer.get_used_cells())
-	if Input.is_action_just_pressed("ui_cancel"):
-		var layer = find_tile(selected_item.current_pos)
-		if layer != null:
-			layer.queue_free()
-		else:
-			print("layer is empty")
-		
-func find_tile(tiles: Vector2i):
-	for layer in $TileMap.get_children():
-		if layer.get_used_cells().has(tiles):
-			return layer
-		else:
-			print("empty")
-	return null
-		
-func bag_storage():
-	#saves item to bag_contents dict when pressing Enter, deletes when pressing Esc
+	display_bag()
+#saves item to bag_contents dict when pressing Enter, deletes when pressing Esc
 	if Input.is_action_just_pressed("ui_accept"):
 # if there is space in specified area
 		if bag_contents[selected_item.current_pos] == null:
@@ -91,10 +64,8 @@ func bag_storage():
 	if Input.is_action_just_pressed("ui_cancel"):
 		res.rotate(res_scene)
 		
+		
 func display_bag():
-#	returns array of Vector2i
 	for cell in tilemap.get_used_cells():
-#		checks bag's local dict for content using Vector2i key
 		if bag_contents[cell] != null:
-#			sets item's position relative to the bag's local coordinate system
 			bag_contents[cell].position = tilemap.map_to_local(cell)

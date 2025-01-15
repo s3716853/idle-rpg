@@ -8,7 +8,6 @@ func rotate(item:Node):
 	if item_space.size() > 1:
 		var x = 1
 		var y = 1
-#		item_space.size() is interchangeable for x and y because matrix must be a square
 		var max = sqrt(item_space.size())
 		var swap
 		while y <= max:
@@ -31,7 +30,6 @@ func rotate(item:Node):
 				x += 1
 			y += 1
 			x = 1
-#	rotate item sprite, and reset rotation above 359 to prevent redundancies and ultimately integer overflow
 	item.rotation_degrees += 90
 	if item.rotation_degrees == 360:
 		item.rotation_degrees = 0

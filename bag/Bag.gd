@@ -22,6 +22,7 @@ func _ready():
 	assign_id(item)
 	add_child(item)
 	selected_item = item
+	selected_item.select_item()
 	
 #	testing resources
 	res_scene = res.scene.instantiate()
@@ -35,45 +36,63 @@ func _ready():
 	for cell in tilemap.get_used_cells():
 		bag_contents[cell] = null
 
-func assign_id(item: Node):
-	item.set_id(item_id)
-	item_id += 1
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	
-#saves item to bag_contents dict when pressing Enter, deletes when pressing Esc
-	if Input.is_action_just_pressed("ui_accept"):
-# 		if there is space in specified area
-		if bag_contents[selected_item.current_pos] == null:
-			
-# 			creates a new scene and adds to tree
-			bag_contents[selected_item.current_pos] = scene.instantiate()
-			add_child(bag_contents[selected_item.current_pos])
-			
-# 			sets item's position relative to the bag's local coordinate system, then fades the colour
-			bag_contents[selected_item.current_pos].position = tilemap.map_to_local(selected_item.current_pos)
-			bag_contents[selected_item.current_pos].modulate = Color(0.8, 0.8, 0.8, 0.8)
-			
-		else: 
-# 			test output to console - there is an item already in the specified area
-			print("item already in space: ", bag_contents[selected_item.current_pos])
-			
-	if Input.is_action_just_pressed("ui_cancel"):
-# 		test output to console 
-		print("item in space is: ", bag_contents[selected_item.current_pos])
-		
-# 		if an item is already in the specified area
-		if bag_contents[selected_item.current_pos] != null:
-			
-# 			delete scene instance and clear bag's dictionary value
-			bag_contents[selected_item.current_pos].queue_free()
-			bag_contents[selected_item.current_pos] = null
-			
+	manage_bag()
+
 #	test for resource rotation
 	if Input.is_action_just_pressed("ui_cancel"):
 		res.rotate(res_scene)
 		
+#saves item to bag_contents dict when pressing Enter, deletes when pressing Esc
+func manage_bag():
+	if Input.is_action_just_pressed("ui_accept"):
+# 		if there is space in specified area
+		var all_cells_free = true
+		for cell in selected_item.current_pos:
+			if bag_contents[cell] != null:
+				all_cells_free = false
+		if all_cells_free:
+			
+# 			creates a new scene and adds to tree
+			var bag_item = scene.instantiate()
+			add_child(bag_item)
+			for cell in selected_item.current_pos:
+				bag_contents[cell] = bag_item
+				
+	# 			sets item's position relative to the bag's local coordinate system, then fades the colour
+				bag_item.position = tilemap.map_to_local(selected_item.centre_vector)
+				bag_item.modulate = Color(0.8, 0.8, 0.8, 0.8)
+				
+		else: 
+# 			test output to console - there is an item already in the specified area
+			print("item already in space")
+			
+#	deleting items
+#	haven't updated to scan through all of current_pos yet, as logically it doesn't quite make sense
+# 	as in: in-game, deleting items from the bag would occur in a circumstance where you either use the item,
+#	or you are reorganising the bag. in both these circumstances, you aren't holding on to another item
+#	at the same time. the cursor could highlight the item you are about to delete so there's an argument
+#	for needing to use multiple cells in this conditional, however you aren't comparing an item with another.
+# 	so I still need to implement a way to navigate the bag without actually holding an item as it currently is
+#	through hardcoded variables up the top of this script. once that's completed, i can forge ahead with
+#	refactoring this conditional.
+	if Input.is_action_just_pressed("ui_cancel"):
+# 		test output to console 
+		print("item in space is: ", bag_contents[selected_item.centre_vector])
+		
+# 		if an item is already in the specified area
+		if bag_contents[selected_item.centre_vector] != null:
+			
+# 			delete scene instance and clear bag's dictionary value
+			bag_contents[selected_item.centre_vector].queue_free()
+			bag_contents[selected_item.centre_vector] = null
+			
+func assign_id(item):
+	item.set_id(item_id)
+	item_id += 1
+
 #i was calling this method every frame... not sure why
 #leaving it for now but its deprecated and from what i can tell has no use other than consuming resources
 func display_bag():

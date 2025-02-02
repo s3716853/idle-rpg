@@ -6,11 +6,14 @@ var bag_contents = {}
 const pocket_layer = 0
 var res_scene
 var item_id = 0
+var cursor
 var cursor_pos
+const SPEED = 1.0
 
 @export var res:Item
 
-var scene = preload("res://items/BagItem.tscn")
+var item_scene = preload("res://items/BagItem.tscn")
+var cursor_scene = preload("res://items/Cursor.tscn")
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	tilemap = $pocket
@@ -18,7 +21,7 @@ func _ready():
 # 	adding in a placeholder item for testing
 # 	instanciate item in scene - currently for testing purposes that an item is placed when starting scene
 # 	sends tilemap for calculations - need to change this so bag.gd calcs movement instead
-	var item = scene.instantiate()
+	var item = item_scene.instantiate()
 	item.set_world_coords(tilemap)
 	assign_id(item)
 	add_child(item)
@@ -59,7 +62,7 @@ func manage_bag():
 			if all_cells_free:
 				
 	# 			creates a new scene and adds to tree
-				var bag_item = scene.instantiate()
+				var bag_item = item_scene.instantiate()
 				add_child(bag_item)
 				for cell in selected_item.current_pos:
 					bag_contents[cell] = bag_item
@@ -68,11 +71,29 @@ func manage_bag():
 					bag_item.position = tilemap.map_to_local(selected_item.centre_vector)
 					bag_item.modulate = Color(0.8, 0.8, 0.8, 0.8)
 					
+					selected_item.select_item()
+					selected_item = null
+					manage_cursor()
+					
 			else: 
 	# 			test output to console - there is an item already in the specified area
 				print("item already in space")
 	else:
-		print("cursor logic")
+		var motion = Vector2i(0, 0)
+		if Input.is_action_just_pressed("ui_down"):
+			motion.x = 0
+			motion.y = SPEED
+		if Input.is_action_just_pressed("ui_up"):
+			motion.x = 0
+			motion.y = -SPEED
+		if Input.is_action_just_pressed("ui_left"):
+			motion.x = -SPEED
+			motion.y = 0
+		if Input.is_action_just_pressed("ui_right"):
+			motion.x = SPEED
+			motion.y = 0
+		cursor_pos = motion + cursor_pos
+		cursor.position = tilemap.map_to_local(cursor_pos)
 
 	#	deleting items
 	#	haven't updated to scan through all of current_pos yet, as logically it doesn't quite make sense
@@ -93,10 +114,23 @@ func manage_bag():
 	# 			delete scene instance and clear bag's dictionary value
 				bag_contents[selected_item.centre_vector].queue_free()
 				bag_contents[selected_item.centre_vector] = null
+				
+				
 			
 func assign_id(item):
 	item.set_id(item_id)
 	item_id += 1
+	
+func manage_cursor():
+	if cursor:
+		print("free cursor")
+		cursor.queue_free()
+	else:
+		print("init cursor")
+		cursor = cursor_scene.instantiate()
+		add_child(cursor)
+		cursor.position = tilemap.map_to_local(Vector2i(1, 1))
+		cursor_pos = Vector2i(1, 1)
 
 #i was calling this method every frame... not sure why
 #leaving it for now but its deprecated and from what i can tell has no use other than consuming resources

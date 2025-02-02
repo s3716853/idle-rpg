@@ -6,6 +6,7 @@ var bag_contents = {}
 const pocket_layer = 0
 var res_scene
 var item_id = 0
+var cursor_pos
 
 @export var res:Item
 
@@ -31,6 +32,7 @@ func _ready():
 	
 # 	placing item inside the bag using hardcoded vector
 	item.position = tilemap.map_to_local(Vector2i(1, 1))
+	cursor_pos = Vector2i(1,1)
 	
 # 	creates empty bag
 	for cell in tilemap.get_used_cells():
@@ -47,47 +49,50 @@ func _process(delta):
 		
 #saves item to bag_contents dict when pressing Enter, deletes when pressing Esc
 func manage_bag():
-	if Input.is_action_just_pressed("ui_accept"):
-# 		if there is space in specified area
-		var all_cells_free = true
-		for cell in selected_item.current_pos:
-			if bag_contents[cell] != null:
-				all_cells_free = false
-		if all_cells_free:
-			
-# 			creates a new scene and adds to tree
-			var bag_item = scene.instantiate()
-			add_child(bag_item)
+	if selected_item:
+		if Input.is_action_just_pressed("ui_accept"):
+	# 		if there is space in specified area
+			var all_cells_free = true
 			for cell in selected_item.current_pos:
-				bag_contents[cell] = bag_item
+				if bag_contents[cell] != null:
+					all_cells_free = false
+			if all_cells_free:
 				
-	# 			sets item's position relative to the bag's local coordinate system, then fades the colour
-				bag_item.position = tilemap.map_to_local(selected_item.centre_vector)
-				bag_item.modulate = Color(0.8, 0.8, 0.8, 0.8)
+	# 			creates a new scene and adds to tree
+				var bag_item = scene.instantiate()
+				add_child(bag_item)
+				for cell in selected_item.current_pos:
+					bag_contents[cell] = bag_item
+					
+		# 			sets item's position relative to the bag's local coordinate system, then fades the colour
+					bag_item.position = tilemap.map_to_local(selected_item.centre_vector)
+					bag_item.modulate = Color(0.8, 0.8, 0.8, 0.8)
+					
+			else: 
+	# 			test output to console - there is an item already in the specified area
+				print("item already in space")
+	else:
+		print("cursor logic")
+
+	#	deleting items
+	#	haven't updated to scan through all of current_pos yet, as logically it doesn't quite make sense
+	# 	as in: in-game, deleting items from the bag would occur in a circumstance where you either use the item,
+	#	or you are reorganising the bag. in both these circumstances, you aren't holding on to another item
+	#	at the same time. the cursor could highlight the item you are about to delete so there's an argument
+	#	for needing to use multiple cells in this conditional, however you aren't comparing an item with another.
+	# 	so I still need to implement a way to navigate the bag without actually holding an item as it currently is
+	#	through hardcoded variables up the top of this script. once that's completed, i can forge ahead with
+	#	refactoring this conditional.
+		if Input.is_action_just_pressed("ui_cancel"):
+	# 		test output to console 
+			print("item in space is: ", bag_contents[selected_item.centre_vector])
+			
+	# 		if an item is already in the specified area
+			if bag_contents[selected_item.centre_vector] != null:
 				
-		else: 
-# 			test output to console - there is an item already in the specified area
-			print("item already in space")
-			
-#	deleting items
-#	haven't updated to scan through all of current_pos yet, as logically it doesn't quite make sense
-# 	as in: in-game, deleting items from the bag would occur in a circumstance where you either use the item,
-#	or you are reorganising the bag. in both these circumstances, you aren't holding on to another item
-#	at the same time. the cursor could highlight the item you are about to delete so there's an argument
-#	for needing to use multiple cells in this conditional, however you aren't comparing an item with another.
-# 	so I still need to implement a way to navigate the bag without actually holding an item as it currently is
-#	through hardcoded variables up the top of this script. once that's completed, i can forge ahead with
-#	refactoring this conditional.
-	if Input.is_action_just_pressed("ui_cancel"):
-# 		test output to console 
-		print("item in space is: ", bag_contents[selected_item.centre_vector])
-		
-# 		if an item is already in the specified area
-		if bag_contents[selected_item.centre_vector] != null:
-			
-# 			delete scene instance and clear bag's dictionary value
-			bag_contents[selected_item.centre_vector].queue_free()
-			bag_contents[selected_item.centre_vector] = null
+	# 			delete scene instance and clear bag's dictionary value
+				bag_contents[selected_item.centre_vector].queue_free()
+				bag_contents[selected_item.centre_vector] = null
 			
 func assign_id(item):
 	item.set_id(item_id)
@@ -95,6 +100,8 @@ func assign_id(item):
 
 #i was calling this method every frame... not sure why
 #leaving it for now but its deprecated and from what i can tell has no use other than consuming resources
+
+#potentially a future function that would be used when loading in saved data or something similar
 func display_bag():
 	for cell in tilemap.get_used_cells():
 		if bag_contents[cell] != null:

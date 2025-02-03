@@ -10,6 +10,7 @@ var cursor
 var cursor_pos
 const SPEED = 1.0
 var last_hovered
+var item
 
 @export var res:Item
 
@@ -22,7 +23,7 @@ func _ready():
 # 	adding in a placeholder item for testing
 # 	instanciate item in scene - currently for testing purposes that an item is placed when starting scene
 # 	sends tilemap for calculations - need to change this so bag.gd calcs movement instead
-	var item = item_scene.instantiate()
+	item = item_scene.instantiate()
 	item.set_world_coords(tilemap)
 	assign_id(item)
 	add_child(item)
@@ -61,21 +62,19 @@ func manage_bag():
 				if bag_contents[cell] != null:
 					all_cells_free = false
 			if all_cells_free:
-				
-	# 			creates a new scene and adds to tree
-				var bag_item = item_scene.instantiate()
-				add_child(bag_item)
+
 				for cell in selected_item.current_pos:
-					bag_contents[cell] = bag_item
+					bag_contents[cell] = item
 					
 		# 			sets item's position relative to the bag's local coordinate system, then fades the colour
-					bag_item.position = tilemap.map_to_local(selected_item.centre_vector)
-					bag_item.modulate = Color(0.7, 0.7, 0.7, 1)
+					item.position = tilemap.map_to_local(selected_item.centre_vector)
+					item.modulate = Color(0.7, 0.7, 0.7, 1)
 					
+					cursor_pos = selected_item.centre_vector
 					selected_item.select_item()
 					selected_item = null
 					manage_cursor()
-					
+					cursor.position = tilemap.map_to_local(cursor_pos)
 			else: 
 	# 			test output to console - there is an item already in the specified area
 				print("item already in space")
@@ -108,7 +107,16 @@ func manage_bag():
 			if last_hovered:
 				last_hovered.modulate = Color(0.7, 0.7, 0.7, 1)
 				last_hovered = null
-
+				
+		if Input.is_action_just_pressed("ui_accept"):
+			if bag_contents[cursor_pos]:
+				selected_item = bag_contents[cursor_pos]
+				selected_item.modulate = Color(1, 1, 1, 1)
+				selected_item.select_item()
+				bag_contents[cursor_pos] = null
+				manage_cursor()
+		
+			
 	#	deleting items
 	#	haven't updated to scan through all of current_pos yet, as logically it doesn't quite make sense
 	# 	as in: in-game, deleting items from the bag would occur in a circumstance where you either use the item,
@@ -139,12 +147,15 @@ func manage_cursor():
 	if cursor:
 		print("free cursor")
 		cursor.queue_free()
+		cursor = null
+		cursor_pos = null
 	else:
 		print("init cursor")
 		cursor = cursor_scene.instantiate()
 		add_child(cursor)
-		cursor.position = tilemap.map_to_local(Vector2i(1, 1))
-		cursor_pos = Vector2i(1, 1)
+		if !cursor_pos:
+			cursor.position = tilemap.map_to_local(Vector2i(1, 1))
+			cursor_pos = Vector2i(1, 1)
 
 #i was calling this method every frame... not sure why
 #leaving it for now but its deprecated and from what i can tell has no use other than consuming resources

@@ -9,6 +9,7 @@ var item_id = 0
 var cursor
 var cursor_pos
 const SPEED = 1.0
+var last_hovered
 
 @export var res:Item
 
@@ -69,7 +70,7 @@ func manage_bag():
 					
 		# 			sets item's position relative to the bag's local coordinate system, then fades the colour
 					bag_item.position = tilemap.map_to_local(selected_item.centre_vector)
-					bag_item.modulate = Color(0.8, 0.8, 0.8, 0.8)
+					bag_item.modulate = Color(0.7, 0.7, 0.7, 1)
 					
 					selected_item.select_item()
 					selected_item = null
@@ -79,6 +80,9 @@ func manage_bag():
 	# 			test output to console - there is an item already in the specified area
 				print("item already in space")
 	else:
+#		cursor logic
+#		movement below is exact same as bagItem
+#		need to refactor all movement into Bag.gd then abstract it into a separate function
 		var motion = Vector2i(0, 0)
 		if Input.is_action_just_pressed("ui_down"):
 			motion.x = 0
@@ -92,8 +96,18 @@ func manage_bag():
 		if Input.is_action_just_pressed("ui_right"):
 			motion.x = SPEED
 			motion.y = 0
-		cursor_pos = motion + cursor_pos
-		cursor.position = tilemap.map_to_local(cursor_pos)
+#		checks for pocket layer cell
+		if (tilemap.get_cell_tile_data(motion + cursor_pos)):
+			cursor_pos = motion + cursor_pos
+			cursor.position = tilemap.map_to_local(cursor_pos)
+		
+		if bag_contents[cursor_pos]:
+			bag_contents[cursor_pos].modulate = Color(1, 1, 1, 1)
+			last_hovered = bag_contents[cursor_pos]
+		else:
+			if last_hovered:
+				last_hovered.modulate = Color(0.7, 0.7, 0.7, 1)
+				last_hovered = null
 
 	#	deleting items
 	#	haven't updated to scan through all of current_pos yet, as logically it doesn't quite make sense

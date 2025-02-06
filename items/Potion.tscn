@@ -1,8 +1,24 @@
-[gd_scene load_steps=2 format=3 uid="uid://4mxk1rrj4r17"]
+[gd_scene load_steps=5 format=3 uid="uid://4mxk1rrj4r17"]
 
 [ext_resource type="Texture2D" uid="uid://dwl7j04ndtxop" path="res://items/potion.png" id="1_0j1sa"]
+[ext_resource type="Texture2D" uid="uid://du8gnylamgt44" path="res://items/item_layout.png" id="2_3uc8a"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ffgwb"]
+texture = ExtResource("2_3uc8a")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+1:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_f02oh"]
+tile_size = Vector2i(32, 32)
+sources/1 = SubResource("TileSetAtlasSource_ffgwb")
 
 [node name="Potion" type="Node2D"]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_0j1sa")
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+position = Vector2(-16, -16)
+tile_map_data = PackedByteArray(0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0)
+tile_set = SubResource("TileSet_f02oh")

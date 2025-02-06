@@ -31,9 +31,9 @@ func _ready():
 	selected_item.select_item()
 	
 #	testing resources
-	res_scene = res.scene.instantiate()
-	add_child(res_scene)
-	res_scene.position = tilemap.map_to_local(Vector2i(3, 3))
+	#res_scene = res.scene.instantiate()
+	#add_child(res_scene)
+	#res_scene.position = tilemap.map_to_local(Vector2i(3, 3))
 	
 # 	placing item inside the bag using hardcoded vector
 	item.position = tilemap.map_to_local(Vector2i(1, 1))
@@ -126,16 +126,16 @@ func manage_bag():
 	# 	so I still need to implement a way to navigate the bag without actually holding an item as it currently is
 	#	through hardcoded variables up the top of this script. once that's completed, i can forge ahead with
 	#	refactoring this conditional.
-		if Input.is_action_just_pressed("ui_cancel"):
-	# 		test output to console 
-			print("item in space is: ", bag_contents[selected_item.centre_vector])
-			
-	# 		if an item is already in the specified area
-			if bag_contents[selected_item.centre_vector] != null:
-				
-	# 			delete scene instance and clear bag's dictionary value
-				bag_contents[selected_item.centre_vector].queue_free()
-				bag_contents[selected_item.centre_vector] = null
+		#if Input.is_action_just_pressed("ui_cancel"):
+	## 		test output to console 
+			#print("item in space is: ", bag_contents[selected_item.centre_vector])
+			#
+	## 		if an item is already in the specified area
+			#if bag_contents[selected_item.centre_vector] != null:
+				#
+	## 			delete scene instance and clear bag's dictionary value
+				#bag_contents[selected_item.centre_vector].queue_free()
+				#bag_contents[selected_item.centre_vector] = null
 				
 				
 			

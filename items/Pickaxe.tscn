@@ -1,8 +1,24 @@
-[gd_scene load_steps=2 format=3 uid="uid://d1em6d4gc8hu4"]
+[gd_scene load_steps=5 format=4 uid="uid://d1em6d4gc8hu4"]
 
 [ext_resource type="Texture2D" uid="uid://uvbwaf2dodtp" path="res://items/pickaxe.png" id="1_el6xr"]
+[ext_resource type="Texture2D" uid="uid://du8gnylamgt44" path="res://items/item_layout.png" id="2_ef3lb"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lnp65"]
+texture = ExtResource("2_ef3lb")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+1:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_03pc1"]
+tile_size = Vector2i(32, 32)
+sources/1 = SubResource("TileSetAtlasSource_lnp65")
 
 [node name="Pickaxe" type="Node2D"]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_el6xr")
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+position = Vector2(-16, -16)
+tile_map_data = PackedByteArray("AAAAAAEAAQABAAAAAAAAAAAAAQABAAAAAAAAAP//AQABAAAAAAD/////AQABAAAAAAABAP//AQABAAAAAAD//wAAAQAAAAAAAAD//wEAAQAAAAAAAAABAAAAAQAAAAAAAAABAAEAAQAAAAAAAAA=")
+tile_set = SubResource("TileSet_03pc1")

@@ -20,10 +20,13 @@ var rotation_matrix = [Vector2i(1, 1)]
 # the vector used as the centre point of the item - mostly used to calculate what the item's
 # position is in local coordinate space outside of the tilemap system
 # currently filled with hardcoded vector, will be calculated in future
-var centre_vector = Vector2i(1,1)
+var centre_vector = Vector2i(2,2)
 
 # bool to make sure item is selected, keeps unselected items from moving around in the bag
 var is_item_selected = false
+
+# the scene passed through to the BagItem script that represents the item
+var scene:Node
 
 func _ready():
 	pass
@@ -78,3 +81,17 @@ func is_space_available(motion: Vector2i):
 		
 func select_item():
 	is_item_selected = !is_item_selected
+	
+func set_item_scene(item_scene: Node):
+	scene = item_scene
+	add_child(scene)
+	
+#	keeps TileMapLayer invisible - hides the green and red tiles as they are only bts logic
+	var scene_tiles = scene.find_child("TileMapLayer")
+	scene_tiles.visible = false
+	var new_pos = []
+	for cell in scene_tiles.get_used_cells_by_id(1, Vector2i(1, 0)):
+		new_pos.append(cell + Vector2i(2, 2))
+	current_pos = new_pos
+	#for cell in scene_tiles.get_used_cells():
+		#cell.get_cell_tile_data()

@@ -19,6 +19,7 @@ sources/1 = SubResource("TileSetAtlasSource_ffgwb")
 texture = ExtResource("1_0j1sa")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
+visible = false
 position = Vector2(-16, -16)
 tile_map_data = PackedByteArray(0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0)
 tile_set = SubResource("TileSet_f02oh")

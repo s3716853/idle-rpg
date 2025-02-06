@@ -15,6 +15,8 @@ var item
 @export var res:Item
 
 var item_scene = preload("res://items/BagItem.tscn")
+var potion_scene = preload("res://items/Potion.tscn")
+var pickaxe_scene = preload("res://items/Pickaxe.tscn")
 var cursor_scene = preload("res://items/Cursor.tscn")
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -25,6 +27,7 @@ func _ready():
 # 	sends tilemap for calculations - need to change this so bag.gd calcs movement instead
 	item = item_scene.instantiate()
 	item.set_world_coords(tilemap)
+	item.set_item_scene(pickaxe_scene.instantiate())
 	assign_id(item)
 	add_child(item)
 	selected_item = item
@@ -36,7 +39,7 @@ func _ready():
 	#res_scene.position = tilemap.map_to_local(Vector2i(3, 3))
 	
 # 	placing item inside the bag using hardcoded vector
-	item.position = tilemap.map_to_local(Vector2i(1, 1))
+	item.position = tilemap.map_to_local(Vector2i(2, 2))
 	cursor_pos = Vector2i(1,1)
 	
 # 	creates empty bag
@@ -48,9 +51,9 @@ func _ready():
 func _process(delta):
 	manage_bag()
 
-#	test for resource rotation
-	if Input.is_action_just_pressed("ui_cancel"):
-		res.rotate(res_scene)
+##	test for resource rotation
+	#if Input.is_action_just_pressed("ui_cancel"):
+		#res.rotate(res_scene)
 		
 #saves item to bag_contents dict when pressing Enter, deletes when pressing Esc
 func manage_bag():
@@ -66,15 +69,15 @@ func manage_bag():
 				for cell in selected_item.current_pos:
 					bag_contents[cell] = item
 					
-		# 			sets item's position relative to the bag's local coordinate system, then fades the colour
-					item.position = tilemap.map_to_local(selected_item.centre_vector)
-					item.modulate = Color(0.7, 0.7, 0.7, 1)
-					
-					cursor_pos = selected_item.centre_vector
-					selected_item.select_item()
-					selected_item = null
-					manage_cursor()
-					cursor.position = tilemap.map_to_local(cursor_pos)
+	# 			sets item's position relative to the bag's local coordinate system, then fades the colour
+				item.position = tilemap.map_to_local(selected_item.centre_vector)
+				item.modulate = Color(0.7, 0.7, 0.7, 1)
+				
+				cursor_pos = selected_item.centre_vector
+				selected_item.select_item()
+				selected_item = null
+				manage_cursor()
+				cursor.position = tilemap.map_to_local(cursor_pos)
 			else: 
 	# 			test output to console - there is an item already in the specified area
 				print("item already in space")
@@ -113,7 +116,12 @@ func manage_bag():
 				selected_item = bag_contents[cursor_pos]
 				selected_item.modulate = Color(1, 1, 1, 1)
 				selected_item.select_item()
-				bag_contents[cursor_pos] = null
+				
+				var keys = bag_contents.keys()
+				for key in keys:
+					if bag_contents[key] != null:
+						if bag_contents[key].id == selected_item.id:
+							bag_contents[key] = null
 				manage_cursor()
 		
 			

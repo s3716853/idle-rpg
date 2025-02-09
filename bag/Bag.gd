@@ -10,7 +10,6 @@ var cursor
 var cursor_pos
 const SPEED = 1.0
 var last_hovered
-var item
 
 @export var res:Item
 
@@ -25,11 +24,10 @@ func _ready():
 # 	adding in a placeholder item for testing
 # 	instanciate item in scene - currently for testing purposes that an item is placed when starting scene
 # 	sends tilemap for calculations - need to change this so bag.gd calcs movement instead
-	item = item_scene.instantiate()
-	item.set_item_scene(pickaxe_scene.instantiate())
-	assign_id(item)
-	add_child(item)
-	selected_item = item
+	selected_item = item_scene.instantiate()
+	selected_item.set_item_scene(pickaxe_scene.instantiate())
+	assign_id(selected_item)
+	add_child(selected_item)
 	selected_item.select_item()
 	
 #	testing resources
@@ -38,7 +36,7 @@ func _ready():
 	#res_scene.position = tilemap.map_to_local(Vector2i(3, 3))
 	
 # 	placing item inside the bag using hardcoded vector
-	item.position = tilemap.map_to_local(Vector2i(2, 2))
+	selected_item.position = tilemap.map_to_local(Vector2i(2, 2))
 	cursor_pos = Vector2i(1,1)
 	
 # 	creates empty bag
@@ -47,7 +45,7 @@ func _ready():
 
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	manage_bag()
 
 ##	test for resource rotation
@@ -75,11 +73,11 @@ func manage_bag():
 			if all_cells_free:
 
 				for cell in selected_item.current_pos:
-					bag_contents[cell] = item
+					bag_contents[cell] = selected_item
 					
 	# 			sets item's position relative to the bag's local coordinate system, then fades the colour
-				item.position = tilemap.map_to_local(selected_item.centre_vector)
-				item.modulate = Color(0.7, 0.7, 0.7, 1)
+				selected_item.position = tilemap.map_to_local(selected_item.centre_vector)
+				selected_item.modulate = Color(0.7, 0.7, 0.7, 1)
 				
 				cursor_pos = selected_item.centre_vector
 				selected_item.select_item()
@@ -118,6 +116,15 @@ func manage_bag():
 						if bag_contents[key].id == selected_item.id:
 							bag_contents[key] = null
 				manage_cursor()
+				
+		if Input.is_action_just_pressed("ui_cancel"):
+			selected_item = item_scene.instantiate()
+			selected_item.set_item_scene(potion_scene.instantiate())
+			assign_id(selected_item)
+			add_child(selected_item)
+			selected_item.select_item()
+			selected_item.position = tilemap.map_to_local(Vector2i(2, 2))
+			manage_cursor()
 		
 			
 	#	deleting items
@@ -160,8 +167,8 @@ func movement():
 		motion.y = 0
 	return motion
 
-func assign_id(item):
-	item.set_id(item_id)
+func assign_id(new_item):
+	new_item.set_id(item_id)
 	item_id += 1
 	
 # returns true only if tile exists in pocket layer in specified direction

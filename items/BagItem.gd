@@ -32,7 +32,7 @@ func _ready():
 func set_id(item_id: int):
 	id = item_id
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	pass
 		
 func select_item():

@@ -8,11 +8,11 @@ func rotate(item:Node):
 	if item_space.size() > 1:
 		var x = 1
 		var y = 1
-		var max = sqrt(item_space.size())
+		var max_size = sqrt(item_space.size())
 		var swap
-		while y <= max:
+		while y <= max_size:
 			#print("y = ", y)
-			while x <= max:
+			while x <= max_size:
 				#print("x = ", x)
 				swap = item_space[Vector2i(x, y)]
 				item_space[Vector2i(x, y)] = item_space[Vector2i(y, x)]
@@ -25,8 +25,8 @@ func rotate(item:Node):
 		while y <= max:
 			if x < (max - (x-1)):
 				swap = item_space[Vector2i(x, y)]
-				item_space[Vector2i(x, y)] = item_space[Vector2i(max, y)]
-				item_space[Vector2i(max, y)] = swap
+				item_space[Vector2i(x, y)] = item_space[Vector2i(max_size, y)]
+				item_space[Vector2i(max_size, y)] = swap
 				x += 1
 			y += 1
 			x = 1

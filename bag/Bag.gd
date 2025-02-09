@@ -26,7 +26,6 @@ func _ready():
 # 	instanciate item in scene - currently for testing purposes that an item is placed when starting scene
 # 	sends tilemap for calculations - need to change this so bag.gd calcs movement instead
 	item = item_scene.instantiate()
-	item.set_world_coords(tilemap)
 	item.set_item_scene(pickaxe_scene.instantiate())
 	assign_id(item)
 	add_child(item)
@@ -58,6 +57,15 @@ func _process(delta):
 #saves item to bag_contents dict when pressing Enter, deletes when pressing Esc
 func manage_bag():
 	if selected_item:
+		var motion = movement()
+		#	make sure there is room to move item before updating current_pos
+		if is_space_available(motion):
+			for i in selected_item.current_pos.size():
+				selected_item.current_pos[i] = motion + selected_item.current_pos[i]
+			for i in selected_item.rotation_matrix.size():
+				selected_item.rotation_matrix[i] = motion + selected_item.rotation_matrix[i]
+			selected_item.centre_vector = motion + selected_item.centre_vector
+			selected_item.position = tilemap.map_to_local(selected_item.centre_vector)
 		if Input.is_action_just_pressed("ui_accept"):
 	# 		if there is space in specified area
 			var all_cells_free = true
@@ -83,21 +91,8 @@ func manage_bag():
 				print("item already in space")
 	else:
 #		cursor logic
-#		movement below is exact same as bagItem
-#		need to refactor all movement into Bag.gd then abstract it into a separate function
-		var motion = Vector2i(0, 0)
-		if Input.is_action_just_pressed("ui_down"):
-			motion.x = 0
-			motion.y = SPEED
-		if Input.is_action_just_pressed("ui_up"):
-			motion.x = 0
-			motion.y = -SPEED
-		if Input.is_action_just_pressed("ui_left"):
-			motion.x = -SPEED
-			motion.y = 0
-		if Input.is_action_just_pressed("ui_right"):
-			motion.x = SPEED
-			motion.y = 0
+		var motion = movement()
+		
 #		checks for pocket layer cell
 		if (tilemap.get_cell_tile_data(motion + cursor_pos)):
 			cursor_pos = motion + cursor_pos
@@ -134,6 +129,7 @@ func manage_bag():
 	# 	so I still need to implement a way to navigate the bag without actually holding an item as it currently is
 	#	through hardcoded variables up the top of this script. once that's completed, i can forge ahead with
 	#	refactoring this conditional.
+	
 		#if Input.is_action_just_pressed("ui_cancel"):
 	## 		test output to console 
 			#print("item in space is: ", bag_contents[selected_item.centre_vector])
@@ -147,9 +143,34 @@ func manage_bag():
 				
 				
 			
+			
+func movement():
+	var motion = Vector2i(0, 0)
+	if Input.is_action_just_pressed("ui_down"):
+		motion.x = 0
+		motion.y = SPEED
+	if Input.is_action_just_pressed("ui_up"):
+		motion.x = 0
+		motion.y = -SPEED
+	if Input.is_action_just_pressed("ui_left"):
+		motion.x = -SPEED
+		motion.y = 0
+	if Input.is_action_just_pressed("ui_right"):
+		motion.x = SPEED
+		motion.y = 0
+	return motion
+
 func assign_id(item):
 	item.set_id(item_id)
 	item_id += 1
+	
+# returns true only if tile exists in pocket layer in specified direction
+func is_space_available(motion: Vector2i):
+	var do_all_tiles_exist = true
+	for cell in selected_item.current_pos:
+		if (!tilemap.get_cell_tile_data(motion + cell)):
+			do_all_tiles_exist = false
+	return do_all_tiles_exist
 	
 func manage_cursor():
 	if cursor:
@@ -161,6 +182,7 @@ func manage_cursor():
 		print("init cursor")
 		cursor = cursor_scene.instantiate()
 		add_child(cursor)
+#		error check - makes sure cursor has a default position
 		if !cursor_pos:
 			cursor.position = tilemap.map_to_local(Vector2i(1, 1))
 			cursor_pos = Vector2i(1, 1)

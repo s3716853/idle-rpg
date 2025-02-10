@@ -43,11 +43,25 @@ func set_item_scene(item_scene: Node):
 	add_child(scene)
 	
 #	keeps TileMapLayer invisible - hides the green and red tiles as they are only bts logic
-	var scene_tiles = scene.find_child("TileMapLayer")
-	scene_tiles.visible = false
+	var scene_tile_layer = scene.find_child("TileMapLayer")
+	scene_tile_layer.visible = false
 	
 #	updates current_pos by collecting all cells that are green in the TileMapLayer of the scene
 	var new_pos = []
-	for cell in scene_tiles.get_used_cells_by_id(1, Vector2i(1, 0)):
-		new_pos.append(cell + Vector2i(2, 2))
+	var scene_tiles = scene_tile_layer.get_used_cells()
+	
+#	sorts all tiles in the tile layer from top-left to bottom-right
+#	then calculates the difference between the bag's top-left tile and the item's top-left tile
+#	the difference will always be at least (1, 1), which is the bag's top-left tile
+#	and will increase 1:1 with the distance between the centre and border of an item
+#	ergo diff represents the centre of the item when it is pressed against the top-left corner of the bag
+	scene_tiles.sort()
+	print(scene_tiles)
+	var diff = Vector2i(1,1) - scene_tiles.front()
+	centre_vector = diff
+	print(diff)
+	
+#	only finds the green tiles, and updates current_pos accordingly
+	for cell in scene_tile_layer.get_used_cells_by_id(1, Vector2i(1, 0)):
+		new_pos.append(cell + diff)
 	current_pos = new_pos

@@ -1,14 +1,14 @@
 extends Node2D
 
+const SPEED = 1.0
+
 var selected_item
 var tilemap: TileMapLayer
 var bag_contents = {}
-const pocket_layer = 0
 var res_scene
 var item_id = 0
 var cursor
 var cursor_pos
-const SPEED = 1.0
 var last_hovered
 
 @export var res:Item
@@ -17,13 +17,13 @@ var item_scene = preload("res://items/BagItem.tscn")
 var potion_scene = preload("res://items/Potion.tscn")
 var pickaxe_scene = preload("res://items/Pickaxe.tscn")
 var cursor_scene = preload("res://items/Cursor.tscn")
+var boot_scene = preload("res://items/Boot.tscn")
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	tilemap = $pocket
 	
 # 	adding in a placeholder item for testing
 # 	instanciate item in scene - currently for testing purposes that an item is placed when starting scene
-# 	sends tilemap for calculations - need to change this so bag.gd calcs movement instead
 	selected_item = item_scene.instantiate()
 	selected_item.set_item_scene(pickaxe_scene.instantiate())
 	assign_id(selected_item)
@@ -52,7 +52,7 @@ func _process(_delta):
 	#if Input.is_action_just_pressed("ui_cancel"):
 		#res.rotate(res_scene)
 		
-#saves item to bag_contents dict when pressing Enter, deletes when pressing Esc
+#saves item to bag_contents dict when pressing Enter
 func manage_bag():
 	if selected_item:
 		var motion = movement()
@@ -119,7 +119,7 @@ func manage_bag():
 				
 		if Input.is_action_just_pressed("ui_cancel"):
 			selected_item = item_scene.instantiate()
-			selected_item.set_item_scene(potion_scene.instantiate())
+			selected_item.set_item_scene(boot_scene.instantiate())
 			assign_id(selected_item)
 			add_child(selected_item)
 			selected_item.select_item()
@@ -181,12 +181,10 @@ func is_space_available(motion: Vector2i):
 	
 func manage_cursor():
 	if cursor:
-		print("free cursor")
 		cursor.queue_free()
 		cursor = null
 		cursor_pos = null
 	else:
-		print("init cursor")
 		cursor = cursor_scene.instantiate()
 		add_child(cursor)
 #		error check - makes sure cursor has a default position

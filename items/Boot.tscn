@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://nwtfwhup5nmr"]
+
+[ext_resource type="Texture2D" uid="uid://xlilgpnj1n2h" path="res://items/boot.png" id="1_qgyd6"]
+[ext_resource type="Texture2D" uid="uid://du8gnylamgt44" path="res://items/item_layout.png" id="2_byqag"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_0gw54"]
+texture = ExtResource("2_byqag")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+1:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_du44x"]
+tile_size = Vector2i(32, 32)
+sources/1 = SubResource("TileSetAtlasSource_0gw54")
+
+[node name="Boot" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(16, 16)
+texture = ExtResource("1_qgyd6")
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+position = Vector2(-16, -16)
+tile_map_data = PackedByteArray(0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0)
+tile_set = SubResource("TileSet_du44x")

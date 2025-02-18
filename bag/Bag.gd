@@ -77,7 +77,7 @@ func manage_bag():
 					
 	# 			sets item's position relative to the bag's local coordinate system, then fades the colour
 				selected_item.position = tilemap.map_to_local(selected_item.centre_vector)
-				selected_item.modulate = Color(0.7, 0.7, 0.7, 1)
+				#selected_item.modulate = Color(0.7, 0.7, 0.7, 1)
 				
 				cursor_pos = selected_item.centre_vector
 				selected_item.select_item()
@@ -96,9 +96,19 @@ func manage_bag():
 			cursor_pos = motion + cursor_pos
 			cursor.position = tilemap.map_to_local(cursor_pos)
 		
+#		checks cursor position to determine if an item needs to be highlighted
 		if bag_contents[cursor_pos]:
-			bag_contents[cursor_pos].modulate = Color(1, 1, 1, 1)
-			last_hovered = bag_contents[cursor_pos]
+#			if last_hovered is null
+			if !last_hovered:
+				bag_contents[cursor_pos].modulate = Color(1, 1, 1, 1)
+				last_hovered = bag_contents[cursor_pos]
+#			updates which item is highlighted if moving from one to another
+			elif last_hovered != bag_contents[cursor_pos]:
+				bag_contents[cursor_pos].modulate = Color(1, 1, 1, 1)
+				last_hovered.modulate = Color(0.7, 0.7, 0.7, 1)
+				last_hovered = bag_contents[cursor_pos]
+			else:
+				pass
 		else:
 			if last_hovered:
 				last_hovered.modulate = Color(0.7, 0.7, 0.7, 1)
